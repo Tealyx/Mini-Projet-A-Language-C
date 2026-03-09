@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
-/* --------------------| Fonctions des Affichages des choix de séléction des jeux ainsi que les choix concernés |-------------------- */
+/* --------------------| Fonctions des Affichages des choix de selection des jeux ainsi que les choix concernes |-------------------- */
 
-void affichechoix() {
+void affichechoix(char *nom) {
     printf("+-------------------------------+\n");
+    printf("|Score : %d                     |\n", lire_point(nom));
     printf("|1 : Addition                   |\n");
     printf("|2 : Soustraction               |\n");
     printf("|3 : Multiplication             |\n");
@@ -16,35 +18,36 @@ void affichechoix() {
     printf("Quel est votre choix ?\n");
 }
 
-void choix() {
+void choix(char *nom) {
     int choix = 0;
 
     scanf("%d", &choix);
 
     switch (choix) {
         case 1:
-            addition();
+            addition(nom);
             break;
 
         case 2:
-            soustraction();
+            soustraction(nom);
             break;
 
         case 3:
-            multiplication();
+            multiplication(nom);
             break;
 
         case 4:
             affichechoixtable(); // Autre choix dans ce cas la
-            choixtable();
+            choixtable(nom);
             break;
 
         case 5:
-            printf("Divisions\n");
+            division(nom);
             break;
 
         case 0:
             printf("Merci de votre visite.\n");
+            exit(0); // Force la sortie du programme
             break;
 
         default:
@@ -57,13 +60,13 @@ void choix() {
 void affichechoixtable() {
     printf("+------------------------------------------------+\n");
     printf("|1 : Afficher une table de multiplication        |\n");
-    printf("|2 : S'entraîner sur une table de multiplication |\n");
+    printf("|2 : S'entrainer sur une table de multiplication |\n");
     printf("|0 : Sortir du jeu                               |\n");
     printf("+------------------------------------------------+\n");
     printf("Quel est votre choix ?\n");
 }
 
-void choixtable() {
+void choixtable(char *nom) {
     int choix = 0;
 
     scanf("%d", &choix);
@@ -74,7 +77,7 @@ void choixtable() {
             break;
 
         case 2:
-            jeuxtable();
+            jeuxtable(nom);
             break;
 
         case 0:
@@ -86,10 +89,43 @@ void choixtable() {
     }
 }
 
+/*-------------------------| division |-------------------*/
+
+void division(char *nom) {
+    int user_rep = 0, rep = 0, compteur = 0;
+    bool est_correct = false;
+    
+    int a = rand() % 101;
+    int b = rand() % 101;
+
+    rep = a / b;
+    printf("Division\n");
+    printf("%d / %d = ?\n", a, b);
+    while (compteur < 3 && est_correct == false)
+    {
+        printf("Entrez le résultat : ");
+        scanf("%d", &user_rep);
+        printf("Vous avez entré %d\n", user_rep);
+        
+        if (user_rep == rep) {
+            printf("Bonne réponse !");
+            est_correct = true;
+        }
+ 
+       else {
+            printf("Mauvaise réponse...\n");
+            compteur = compteur + 1;
+        }
+    }
+
+    calcul_points(compteur, nom, est_correct, rep);
+}
+
 /* --------------------| Fonctions de l'addition |-------------------- */
 
-void addition() {
-    int user_rep = 0, rep = 0;
+void addition(char *nom) {
+    int user_rep = 0, rep = 0, compteur = 0;
+    bool est_correct = false;
     
     int a = rand() % 101;
     int b = rand() % 101;
@@ -97,47 +133,63 @@ void addition() {
     rep = a + b;
     printf("Addition\n");
     printf("%d + %d = ?\n", a, b);
-    printf("Entrez le résultat : ");
-    scanf("%d", &user_rep);
-    printf("Vous avez entré %d\n", user_rep);
     
-    if (user_rep == rep) {
-        printf("Bonne réponse !");
+    while(compteur < 3 && est_correct == false) 
+    {
+        printf("Entrez le résultat : ");
+        scanf("%d", &user_rep);
+        printf("Vous avez entré %d\n", user_rep);
+        
+        if (user_rep == rep) {
+            printf("Bonne réponse !");
+            est_correct = true;
+        }
+        else {
+            printf("Mauvaise réponse...\n");
+            compteur = compteur + 1;
+        }
     }
-    else {
-        printf("Mauvaise réponse...\n");
-        printf("La réponse était %d", rep);
-    }
+
+    calcul_points(compteur, nom, est_correct, rep);
+
 }
 
 /* --------------------| Fonctions de la multiplication |-------------------- */
 
-void multiplication() {
-    int user_rep = 0, rep = 0;
+void multiplication(char *nom) {
+    int user_rep = 0, rep = 0, compteur = 0 ;
+    bool est_correct = false;
     
-    int a = rand() % 11;
-    int b = rand() % 11;
+    int a = rand() % 101;
+    int b = rand() % 101;
 
     rep = a * b;
     printf("Multiplication\n");
     printf("%d * %d = ?\n", a, b);
-    printf("Entrez le résultat : ");
-    scanf("%d", &user_rep);
-    printf("Vous avez entré %d\n", user_rep);
-    
-    if (user_rep == rep) {
-        printf("Bonne réponse !");
+    while(compteur < 3 && est_correct == false) {
+            printf("Entrez le résultat : ");
+        scanf("%d", &user_rep);
+        printf("Vous avez entré %d\n", user_rep);
+        
+        if (user_rep == rep) {
+            printf("Bonne réponse !");
+            est_correct = true;
+        }
+        else {
+            printf("Mauvaise réponse...\n");
+            compteur = compteur + 1;
+        }
     }
-    else {
-        printf("Mauvaise réponse...\n");
-        printf("La réponse était %d", rep);
-    }
+        
+    calcul_points(compteur, nom, est_correct, rep);
+
 }
 
 /* --------------------| Fonction de la soustraction |-------------------- */
 
-void soustraction() {
-    int user_rep = 0, rep = 0, temp = 0;
+void soustraction(char *nom) {
+    int user_rep = 0, rep = 0, temp = 0 , compteur = 0;
+    bool est_correct = false ;
     
     int a = rand() % 101;
     int b = rand() % 101;
@@ -160,8 +212,11 @@ void soustraction() {
     }
     else {
         printf("Mauvaise réponse...\n");
-        printf("La réponse était %d", rep);
+        printf("La réponse était %d\n", rep);
     }
+
+    calcul_points(compteur, nom, est_correct, rep);
+
 }
 
 /* --------------------| Fonctions des tables de multiplication |-------------------- */
@@ -181,8 +236,9 @@ void affichetable() {
 }
 
 // Choix 2 : L'utilisateur s'exerce sur la table de son choix
-void jeuxtable() {
+void jeuxtable(char *nom) {
     int i, n, rep;
+    int score_actuel = lire_point(nom); // Lit le score actuel
 
     printf("Sur quel table de multiplication souhaitez-vous vous exercez ?\n");
     scanf("%d", &n);
@@ -194,19 +250,96 @@ void jeuxtable() {
 
         if (rep == n * i)
         {
-            printf("Gagné !\n");
+            printf("Gagne !\n");
+            ajouter_point(nom, score_actuel); // Ajoute 1 au score actuel
         }
         else {
             printf("Perdu...\n");
         } 
     }
+}
 
+void calcul_points(int compteur, char *nom, bool est_correct, int rep) {
+    int score_actuel = lire_point(nom); // Lit le score actuel
+    
+    if (est_correct == false) {
+        printf("La réponse était %d\n", rep);
+    }
+    else if (compteur == 0)
+    {
+        ajouter_point(nom, score_actuel + 9); // Ajoute 10 au score actuel
+    }
+    else if (compteur == 1)
+    {
+        ajouter_point(nom, score_actuel + 4); // Ajoute 5 au score actuel
+    }
+    else if (compteur == 2)
+    {
+        ajouter_point(nom, score_actuel); // Ajoute 1 au score actuel
+    }
+}
+
+/* Demande le nom du joueur */
+char* demander_nom(){
+    static char nom[20]; // static garde le nom en mémoire après la fonction
+    printf("Entrez votre nom :\n");
+    scanf("%s", nom);
+    return nom;
+}
+
+/* Lit le score du joueur depuis son fichier. Crée le fichier si inexistant */
+int lire_point(char *nom) {
+    
+    FILE *f; // Pointeur vers le fichier
+    int score = 0;
+    char fichier[30];
+    
+    sprintf(fichier, "%s.txt", nom); // Crée "nom.txt"
+
+    f = fopen(fichier, "r"); // Ouvre en lecture
+
+    if (f != NULL) // Si le fichier existe
+    {
+        fscanf(f, "%d", &score); // Lit le score
+        fclose(f);
+    }
+    else { // Si le fichier n'existe pas
+        f = fopen(fichier, "w");
+        fprintf(f, "0"); // Crée avec score 0
+        fclose(f);
+    }
+    
+    return score;
+}
+
+/* Ajoute 1 point au score et le sauvegarde */
+void ajouter_point(char *nom, int score) {
+    
+    FILE *f;
+    char fichier[30];
+
+    sprintf(fichier, "%s.txt", nom); // Crée "nom.txt"
+
+    f = fopen(fichier, "w"); // Ouvre en écriture (écrase le contenu)
+
+    fprintf(f, "%d", score + 1); // Écrit le nouveau score
+
+    fclose(f);
 }
 
 /* --------------------| Fonction principal |-------------------- */
 
 int main(void) {
     srand(time(NULL));
-    affichechoix();
-    choix();
+
+
+    char *nom = demander_nom();
+
+    lire_point(nom);
+
+    while (1) {
+        affichechoix(nom);
+        choix(nom);
+    }
 }
+
