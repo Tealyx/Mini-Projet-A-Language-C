@@ -96,7 +96,7 @@ Aucune bibliothèque externe utilisée.
 Dans le dossier du projet :
 
 ```bash
-gcc main.c menu.c calcul.c score.c -o jeu
+gcc src/*.c -I include -o jeu
 ```
 
 Puis lancer :
